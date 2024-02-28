@@ -6,10 +6,7 @@ public abstract class Produto {
 	private float preco;
 	private float peso;
 	private int tipo;
-	
 
-	
-	
 	public Produto(int identificacao, float preco, float peso, int tipo) {
 		
 		this.identificacao = identificacao;

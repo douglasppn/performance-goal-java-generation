@@ -4,6 +4,10 @@ package menu;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import menu.controller.MenuController;
+import menu.model.Eletronicos;
+import menu.model.Produto;
+import menu.model.Roupas;
 import menu.util.Cores;
 
 public class main {
@@ -11,8 +15,24 @@ public class main {
 	public static Scanner leia = new Scanner(System.in);
 
 	public static void main(String[] args) {
+			// TODO Auto-generated method stub
+		
+		MenuController produtos = new MenuController();
+
 		String opcao = "0";
 		boolean loopMenu = true;	
+		
+		Roupas r1 = new Roupas(produtos.gerarNumero(), 18f, 2f, 1, 1);
+		produtos.cadastrar(r1);
+		
+		Roupas r2 = new Roupas(produtos.gerarNumero(), 18f, 1f, 2, 2);
+		produtos.cadastrar(r2);
+		
+		Eletronicos e1 = new Eletronicos(produtos.gerarNumero(), 18f, 50f, 1, 1);
+		produtos.cadastrar(e1);
+		
+		Eletronicos e2 = new Eletronicos(produtos.gerarNumero(), 18f, 50f, 1, 2);
+		produtos.cadastrar(e2);
 			
 		while (loopMenu) {
 			
