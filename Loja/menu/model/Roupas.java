@@ -33,7 +33,7 @@ public class Roupas extends Produto implements MenuRepository {
 		}
 		
 		super.visualizar();
-		System.out.println("Peso do produto: " + tipoTecido);
+		System.out.println("Peso do produto: " + tipoTecido + "\n");
 	}
 
 	@Override

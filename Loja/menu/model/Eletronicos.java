@@ -22,7 +22,7 @@ public class Eletronicos extends Produto implements MenuRepository {
     @Override
 	public void visualizar() {
 		super.visualizar();
-		System.out.println("Garantia em meses: " + this.garantiaMeses);
+		System.out.println("Garantia em meses: " + this.garantiaMeses + "\n");
 	}
 
 	@Override

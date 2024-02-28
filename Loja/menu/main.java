@@ -4,10 +4,8 @@ package menu;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import menu.model.*;
 import menu.controller.MenuController;
-import menu.model.Eletronicos;
-import menu.model.Produto;
-import menu.model.Roupas;
 import menu.util.Cores;
 
 public class main {
@@ -18,7 +16,9 @@ public class main {
 			// TODO Auto-generated method stub
 		
 		MenuController produtos = new MenuController();
-
+		
+		int tipo, tecido, garantiaMeses, numero;
+		float preco, peso;
 		String opcao = "0";
 		boolean loopMenu = true;	
 		
@@ -65,12 +65,17 @@ public class main {
 			case "1":
 				System.out.println(Cores.TEXT_WHITE + "Listar todos os produtos\n\n");
 				
+				produtos.listarProdutos();
 				System.out.println("Deseja continuar? (S/N) ");
 				loopMenu = continueMenu(leia.nextLine());
 				break;
 				
 			case "2":
 				System.out.println(Cores.TEXT_WHITE + "Procurar por ID do produto\n\n");
+				numero = leia.nextInt();
+				leia.nextLine();
+				
+				produtos.procurarID(numero);
 				
 				System.out.println("Deseja continuar? (S/N) ");
 				loopMenu = continueMenu(leia.nextLine());
@@ -79,6 +84,46 @@ public class main {
 			case "3":
 				System.out.println(Cores.TEXT_WHITE + "Cadastrar produto\n\n");
 				
+				System.out.println("Digite o preço: ");
+				preco = leia.nextFloat();
+				
+				leia.nextLine(); // Consumir a nova linha pendente
+				
+				System.out.println("Digite o peso do produto: ");
+				leia.skip("\\R?"); //não permite pular a inserção de peso para o usuário
+				peso = leia.nextFloat();
+				
+				do {
+					System.out.println("Digite o Tipo de produto: \n");
+					System.out.println("1-Roupa");
+					System.out.println("2-Produtos Eletronicos\n");
+					tipo = leia.nextInt();
+					leia.nextLine(); // Consumir a nova linha pendente
+					
+					if (tipo != 1 && tipo != 2) {
+						System.out.println(Cores.TEXT_RED_BOLD + "\nPor favor, digite uma opção válida!\n" + Cores.TEXT_RESET);
+					} else {
+						
+					}
+					
+				}while(tipo != 1 && tipo != 2);
+				
+				switch(tipo) {
+				case 1 -> {
+					System.out.println("Digite o tipo de tecido da roupa: ");
+					tecido = leia.nextInt();
+					leia.nextLine(); // Consumir a nova linha pendente
+					produtos.cadastrar(new Roupas(produtos.gerarNumero(), preco, peso, tipo, tecido));
+					}
+				case 2 -> {
+					System.out.println("Digite o garantia em meses: ");
+					garantiaMeses = leia.nextInt();
+					leia.nextLine(); // Consumir a nova linha pendente
+					produtos.cadastrar(new Eletronicos(produtos.gerarNumero(), preco, peso, tipo, garantiaMeses));
+					}
+
+				}
+				
 				System.out.println("Deseja continuar? (S/N) ");
 				loopMenu = continueMenu(leia.nextLine());
 				break;
@@ -86,12 +131,64 @@ public class main {
 			case "4":
 				System.out.println(Cores.TEXT_WHITE + "Atualizar produto\n\n");
 				
+				System.out.println("Digite o ID do produto: ");
+				numero = leia.nextInt();
+				leia.nextLine();
+				
+				var buscaConta = produtos.buscarNaCollection(numero);
+				
+				if(buscaConta != null) {
+					
+					tipo = buscaConta.getTipo();
+					
+					System.out.println("Digite o preço: ");
+					preco = leia.nextFloat();
+					
+					leia.nextLine(); // Consumir a nova linha pendente
+					
+					System.out.println("Digite o peso do produto: ");
+					leia.skip("\\R?"); //não permite pular a inserção de peso para o usuário
+					peso = leia.nextFloat();
+					
+					switch (tipo) {
+					
+						case 1 -> {
+							System.out.println("Digite o tipo de tecido da roupa: ");
+							tecido = leia.nextInt();
+							leia.nextLine();
+							
+							produtos.atualizar(new Roupas(numero, preco, peso, tipo, tecido));
+							
+						}
+						
+						case 2 -> {
+							System.out.println("Digite o garantia em meses: ");
+							garantiaMeses = leia.nextInt();
+							leia.nextLine();
+							
+							produtos.atualizar(new Eletronicos(numero, preco, peso, tipo, garantiaMeses));
+							
+						}
+						default -> {
+							System.out.println("Tipo de produto inválido!");
+						}
+					}
+				} else {
+					System.out.println("O produto não foi encontrada!");
+				}
+				
 				System.out.println("Deseja continuar? (S/N) ");
 				loopMenu = continueMenu(leia.nextLine());
 				break;
 				
 			case "5":
 				System.out.println(Cores.TEXT_WHITE + "Deletar produto\n\n");
+				
+				System.out.println("Digite o ID do produto: ");
+				numero = leia.nextInt();
+				leia.nextLine();
+				
+				produtos.deletar(numero);
 				
 				System.out.println("Deseja continuar? (S/N) ");
 				loopMenu = continueMenu(leia.nextLine());
@@ -118,15 +215,15 @@ public class main {
 	}
 	
 	public static void sobre() {
-		
-		System.out.println("*".repeat(53));
-		System.out.println("Projeto Desenvolvido por: Douglas Papani Cardoso");
-		System.out.println("Generation Brasil - generation@generation.org");
-		System.out.println("github.com/douglasppn/performance-goal-java-generation");
-		System.out.println("*".repeat(53));
 			
-	}
-		
+			System.out.println("*".repeat(53));
+			System.out.println("Projeto Desenvolvido por: Douglas Papani Cardoso");
+			System.out.println("Generation Brasil - generation@generation.org");
+			System.out.println("github.com/douglasppn/performance-goal-java-generation");
+			System.out.println("*".repeat(53));
+				
+		}
+			
 	public static boolean continueMenu (String continuar) {
 
 		if (continuar.equalsIgnoreCase("S")) {
